@@ -14,6 +14,15 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --color always --check lua
 
+  luacheck:
+    name: luacheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nebularg/actions-luacheck@v1
+        with:
+          files: lua/
+
   test:
     runs-on: ubuntu-latest
     strategy:
