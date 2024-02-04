@@ -7,11 +7,11 @@ local Unit = unit.Unit
 local UnitType = unit.UnitType
 
 describe("Database", function()
-    it("works with gram items", function ()
+    it("works with gram items", function()
         local db = Database:new()
         local food = Food:new("chicken breast", Unit:new(UnitType.gram), 100)
         local macro = Macro:new(31, 0, 3.6)
-        db:add(food, macro)
+        db:add(FoodItem:new(food, macro))
 
         local item = db:get("chicken breast 200g")
         local expected = FoodItem:new(
@@ -20,21 +20,21 @@ describe("Database", function()
         )
 
         assert(
-            item.food.name == expected.food.name and
-            item.food.unit.unit == expected.food.unit.unit and
-            item.food.amount == expected.food.amount and
-            item.macro.protein == expected.macro.protein and
-            item.macro.carbs == expected.macro.carbs and
-            item.macro.fat == expected.macro.fat,
+            item.food.name == expected.food.name
+                and item.food.unit.unit == expected.food.unit.unit
+                and item.food.amount == expected.food.amount
+                and item.macro.protein == expected.macro.protein
+                and item.macro.carbs == expected.macro.carbs
+                and item.macro.fat == expected.macro.fat,
             "chicken breast 200g"
         )
     end)
 
-    it("works with piece items", function ()
+    it("works with piece items", function()
         local db = Database:new()
         local food = Food:new("apple", Unit:new(UnitType.piece), 1)
         local macro = Macro:new(0.3, 25, 0.2)
-        db:add(food, macro)
+        db:add(FoodItem:new(food, macro))
 
         local item = db:get("apple 2pc")
         local expected = FoodItem:new(
@@ -43,12 +43,12 @@ describe("Database", function()
         )
 
         assert(
-            item.food.name == expected.food.name and
-            item.food.unit.unit == expected.food.unit.unit and
-            item.food.amount == expected.food.amount and
-            item.macro.protein == expected.macro.protein and
-            item.macro.carbs == expected.macro.carbs and
-            item.macro.fat == expected.macro.fat,
+            item.food.name == expected.food.name
+                and item.food.unit.unit == expected.food.unit.unit
+                and item.food.amount == expected.food.amount
+                and item.macro.protein == expected.macro.protein
+                and item.macro.carbs == expected.macro.carbs
+                and item.macro.fat == expected.macro.fat,
             "apple 2pc"
         )
     end)

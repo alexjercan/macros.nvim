@@ -11,7 +11,7 @@ local UnitType = {
 --- This module contains the unit of measurement for the ingredients.
 ---
 --- @field unit UnitType
-local Unit = { }
+local Unit = {}
 
 --- A function that creates a new unit.
 ---
@@ -33,7 +33,13 @@ end
 Unit.from = function(unit)
     if unit == "g" or unit == "gr" or unit == "gram" or unit == "grams" then
         return Unit:new(UnitType.gram)
-    elseif unit == "p" or unit == "pc" or unit == "pcs" or unit == "piece" or unit == "pieces" then
+    elseif
+        unit == "p"
+        or unit == "pc"
+        or unit == "pcs"
+        or unit == "piece"
+        or unit == "pieces"
+    then
         return Unit:new(UnitType.piece)
     else
         error("Unknown unit: " .. unit)

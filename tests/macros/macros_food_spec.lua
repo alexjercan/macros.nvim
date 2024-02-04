@@ -9,7 +9,9 @@ describe("food", function()
         local expected = Food:new("apple", Unit:new(UnitType.gram), 100)
 
         assert(
-            food.name == expected.name and food.unit.unit == expected.unit.unit and food.amount == expected.amount,
+            food.name == expected.name
+                and food.unit.unit == expected.unit.unit
+                and food.amount == expected.amount,
             "apple 100g"
         )
     end)
@@ -19,7 +21,9 @@ describe("food", function()
         local expected = Food:new("white flour", Unit:new(UnitType.gram), 500)
 
         assert(
-            food.name == expected.name and food.unit.unit == expected.unit.unit and food.amount == expected.amount,
+            food.name == expected.name
+                and food.unit.unit == expected.unit.unit
+                and food.amount == expected.amount,
             "white flour 500g"
         )
     end)
@@ -29,7 +33,9 @@ describe("food", function()
         local expected = Food:new("apple", Unit:new(UnitType.piece), 1)
 
         assert(
-            food.name == expected.name and food.unit.unit == expected.unit.unit and food.amount == expected.amount,
+            food.name == expected.name
+                and food.unit.unit == expected.unit.unit
+                and food.amount == expected.amount,
             "apple 1pc"
         )
     end)
@@ -39,7 +45,9 @@ describe("food", function()
         local expected = Food:new("white flour", Unit:new(UnitType.piece), 1)
 
         assert(
-            food.name == expected.name and food.unit.unit == expected.unit.unit and food.amount == expected.amount,
+            food.name == expected.name
+                and food.unit.unit == expected.unit.unit
+                and food.amount == expected.amount,
             "white flour 1piece"
         )
     end)

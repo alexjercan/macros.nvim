@@ -32,7 +32,7 @@ end
 ---@param food string
 ---
 ---@return Food
-Food.from = function (food)
+Food.from = function(food)
     local parts = {}
     for part in string.gmatch(food, "%S+") do
         table.insert(parts, part)

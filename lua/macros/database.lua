@@ -25,10 +25,19 @@ end
 
 --- A function that adds a food item to the database.
 ---
----@param food Food
----@param macro Macro
-function Database:add(food, macro)
-    self.foods[food.name] = FoodItem:new(food, macro)
+---@param item FoodItem
+function Database:add(item)
+    self.foods[item.food.name] = item
+end
+
+--- A function that adds multiple food items to the database.
+---
+---@param items table<FoodItem>
+---
+function Database:extend(items)
+    for _, item in ipairs(items) do
+        self:add(item)
+    end
 end
 
 --- A function that returns a food item from the database. This function will

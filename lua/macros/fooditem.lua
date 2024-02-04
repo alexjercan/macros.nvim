@@ -1,3 +1,6 @@
+local Food = require("macros.food")
+local Macro = require("macros.macro")
+
 --- Tuple class that will store the food item and its macronutrients.
 ---
 ---@class FoodItem
@@ -18,6 +21,19 @@ function FoodItem:new(food, macro)
     o.food = food
     o.macro = macro
     return o
+end
+
+--- A function that parses a string and returns the corresponding food item.
+---
+---@param input string
+---
+---@return FoodItem
+function FoodItem.from(input)
+    local parts = vim.split(input, ",")
+    local food = Food.from(parts[1])
+    local macro =
+        Macro:new(tonumber(parts[2]), tonumber(parts[3]), tonumber(parts[4]))
+    return FoodItem:new(food, macro)
 end
 
 --- A function that displays the food item as a string.

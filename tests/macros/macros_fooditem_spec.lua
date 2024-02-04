@@ -11,7 +11,9 @@ describe("FoodItem", function()
         local macro = Macro:new(31, 0, 3.6)
         local item = FoodItem:new(food, macro)
 
-        assert(tostring(item) == "chicken breast 100g,31,0,3.6", "chicken breast,31,0,3.6")
+        assert(
+            tostring(item) == "chicken breast 100g,31,0,3.6",
+            "chicken breast,31,0,3.6"
+        )
     end)
 end)
-
