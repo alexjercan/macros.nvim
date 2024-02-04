@@ -1,1 +1,1 @@
-vim.api.nvim_create_user_command("MyFirstFunction", require("macros").hello, {})
+vim.api.nvim_create_user_command("Macros", require("macros").macros, {})

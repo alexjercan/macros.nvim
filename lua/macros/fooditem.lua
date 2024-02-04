@@ -1,0 +1,32 @@
+--- Tuple class that will store the food item and its macronutrients.
+---
+---@class FoodItem
+---
+---@field food Food
+---@field macro Macro
+local FoodItem = {}
+
+--- A function that creates a new food item.
+---
+---@param food Food
+---@param macro Macro
+---
+---@return FoodItem
+function FoodItem:new(food, macro)
+    local o = setmetatable({}, self)
+    self.__index = self
+    o.food = food
+    o.macro = macro
+    return o
+end
+
+--- A function that displays the food item as a string.
+---
+---@param self FoodItem
+---
+---@return string
+function FoodItem:__tostring()
+    return tostring(self.food) .. "," .. tostring(self.macro)
+end
+
+return FoodItem
