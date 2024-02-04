@@ -4,8 +4,10 @@ local FoodItem = require("macros.fooditem")
 
 ---@class Config
 ---
+---@field file string?
 ---@field items table<string>
 local config = {
+    file = nil,
     items = {},
 }
 
@@ -26,6 +28,9 @@ M.setup = function(args)
     M.database:extend({})
     for _, item in ipairs(M.config.items) do
         M.database:add(FoodItem.from(item))
+    end
+    if M.config.file then
+        M.database:load(M.config.file)
     end
 end
 

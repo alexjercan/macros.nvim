@@ -33,10 +33,24 @@ end
 --- A function that adds multiple food items to the database.
 ---
 ---@param items table<FoodItem>
----
 function Database:extend(items)
     for _, item in ipairs(items) do
         self:add(item)
+    end
+end
+
+--- A function that adds food items from a file to the database.
+---
+---@param file string
+function Database:load(file)
+    local fd = io.open(file, "r")
+
+    if fd == nil then
+        error("File not found: " .. file)
+    end
+
+    for line in fd:lines() do
+        self:add(FoodItem.from(line))
     end
 end
 
