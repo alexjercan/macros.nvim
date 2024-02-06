@@ -52,4 +52,27 @@ describe("Database", function()
             "apple 2pc"
         )
     end)
+
+    it("works with fractional piece items", function()
+        local db = Database:new()
+        local food = Food:new("apple", Unit:new(UnitType.piece), 1)
+        local macro = Macro:new(0.3, 25, 0.2)
+        db:add(FoodItem:new(food, macro))
+
+        local item = db:get("apple 0.5pc")
+        local expected = FoodItem:new(
+            Food:new("apple", Unit:new(UnitType.piece), 0.5),
+            Macro:new(0.15, 12.5, 0.1)
+        )
+
+        assert(
+            item.food.name == expected.food.name
+                and item.food.unit.unit == expected.food.unit.unit
+                and item.food.amount == expected.food.amount
+                and item.macro.protein == expected.macro.protein
+                and item.macro.carbs == expected.macro.carbs
+                and item.macro.fat == expected.macro.fat,
+            "apple 0.5pc"
+        )
+    end)
 end)

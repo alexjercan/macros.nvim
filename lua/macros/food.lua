@@ -33,13 +33,10 @@ end
 ---
 ---@return Food
 Food.from = function(food)
-    local parts = {}
-    for part in string.gmatch(food, "%S+") do
-        table.insert(parts, part)
-    end
+    local parts = vim.split(food, " ")
 
     local name = table.concat(parts, " ", 1, #parts - 1)
-    local quantity, unit = parts[#parts]:match("(%d+)(%a+)")
+    local quantity, unit = parts[#parts]:match("([%d%.]+)(%a+)")
 
     local amount = tonumber(quantity)
 
