@@ -2,12 +2,13 @@
 local Database = require("macros.database")
 local FoodItem = require("macros.fooditem")
 
+local data_path = vim.fn.stdpath("data")
+local macros_path = string.format("%s/macros.csv", data_path)
+
 ---@class Config
 ---
----@field file string?
 ---@field items table<string>
 local config = {
-    file = nil,
     items = {},
 }
 
@@ -24,14 +25,17 @@ M.database = Database:new()
 ---
 ---@param args Config?
 M.setup = function(args)
+    -- create the file if it doesn't exist
+    if vim.fn.filereadable(macros_path) == 0 then
+        vim.fn.writefile({}, macros_path)
+    end
+
     M.config = vim.tbl_deep_extend("force", M.config, args or {})
     M.database:extend({})
     for _, item in ipairs(M.config.items) do
         M.database:add(FoodItem.from(item))
     end
-    if M.config.file then
-        M.database:load(M.config.file)
-    end
+    M.database:load(macros_path)
 end
 
 ---Prints the macros of the current line
