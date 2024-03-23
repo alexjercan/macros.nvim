@@ -24,21 +24,29 @@ chicken breast 100g
 chicken breast 100g,31,0,3.6
 ```
 
+To add a new food item you can use the `:MacrosInsert` command. This will take
+the current line and add it to the list of food items.
+
+```
+chicken breast 100g,31,0,3.6
+:MacrosInsert
+-- now you will be able to use chicken breast in the future
+```
+
 ## Config
 
 You can specify the food items to add in two ways. First you can create a csv
-file and put all the data inside and then in setup pass the path to the file in
-the `file` optional argument. Or you can pass them line by line in the `items`
-table.
+file and put all the data inside and then copy it in the `data` folder. By
+default that is in `~/.local/share/nvim/`. Or you can pass them line by line in
+the `items` table.
 
 Complete example of config using lazy
 
 ```lua
 return {
-    dir = "/home/alex/personal/macros.nvim/",
+    "alexjercan/macros.nvim",
     config = function ()
         require("macros").setup({
-            file = "/path/to/the/csv/file.csv",
             items = {
                 "chicken breast 100g,31,0,3.6",
                 "apple 1p,0.3,25,0.2",
