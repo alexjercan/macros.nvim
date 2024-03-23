@@ -56,4 +56,22 @@ M.macros = function()
     )
 end
 
+---Insert a new item into the database and file from the current line
+M.insert = function()
+    local buffer = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+
+    local result = FoodItem.from(lines[line])
+    M.database:add(result)
+
+    local fd = io.open(macros_path, "a")
+    if fd == nil then
+        error("File not found: " .. macros_path)
+    end
+
+    fd:write(tostring(result) .. "\n")
+    fd:close()
+end
+
 return M
