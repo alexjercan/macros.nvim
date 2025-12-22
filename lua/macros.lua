@@ -129,7 +129,7 @@ M.query = function()
 
     local choices = {}
     for i, item in ipairs(results) do
-        choices[i] = item
+        choices[i] = i .. ". " .. item
     end
 
     vim.cmd("redraw!")
@@ -149,7 +149,7 @@ M.query = function()
         n,
         line - 1,
         n,
-        { choices[choice] }
+        { results[choice] }
     )
 end
 
