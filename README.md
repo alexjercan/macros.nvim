@@ -5,6 +5,11 @@
 
 A plugin to compute the macros for different types of food.
 
+## Requirements
+
+- Neovim >= 0.8
+- Optional: nvim-cmp for completion
+
 ## Quickstart
 
 The food items have to be in the following format `<food item name>
@@ -62,3 +67,24 @@ and the csv file should be like
 chicken breast 100g,31,0,3.6
 apple 1p,0.3,25,0.2
 ```
+
+## Completion
+
+If you use `nvim-cmp`, macros.nvim provides completion for food items
+(based on name + unit).
+
+Completion is enabled automatically when `nvim-cmp` is installed.
+
+## Health
+
+You can check the plugin status with:
+
+```
+:checkhealth macros
+```
+
+This will verify:
+- Neovim compatibility
+- Database state
+- CSV file availability
+- Optional integrations

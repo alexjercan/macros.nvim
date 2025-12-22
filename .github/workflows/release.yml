@@ -4,7 +4,11 @@ on:
     tags:
       - 'v*'
 jobs:
+  test:
+    uses: ./.github/workflows/lint-test.yml
+
   luarocks-upload:
+    needs: test
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3

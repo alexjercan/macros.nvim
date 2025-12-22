@@ -29,6 +29,7 @@ end
 ---
 ---@return FoodItem
 function FoodItem.from(input)
+    input = vim.trim(input)
     local parts = vim.split(input, ",")
     local food = Food.from(parts[1])
     local macro =
