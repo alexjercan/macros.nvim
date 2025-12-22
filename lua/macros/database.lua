@@ -100,7 +100,10 @@ function Database:query(prefix)
     local results = {}
     for key, item in pairs(self.foods) do
         if vim.startswith(key, prefix) then
-            table.insert(results, item.food.name .. " " .. tostring(item.food.unit))
+            table.insert(
+                results,
+                item.food.name .. " " .. tostring(item.food.unit)
+            )
         end
     end
 
