@@ -98,9 +98,9 @@ end
 function Database:query(prefix)
     prefix = string.lower(prefix)
     local results = {}
-    for key, _ in pairs(self.foods) do
+    for key, item in pairs(self.foods) do
         if vim.startswith(key, prefix) then
-            table.insert(results, key)
+            table.insert(results, item.food.name .. " " .. tostring(item.food.unit))
         end
     end
 
