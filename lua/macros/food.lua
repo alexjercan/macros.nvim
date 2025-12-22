@@ -33,7 +33,8 @@ end
 ---
 ---@return Food
 Food.from = function(food)
-    local parts = vim.split(food, " ")
+    food = vim.trim(food)
+    local parts = vim.split(food, "%s+", { plain = false, trimempty = true })
 
     local name = table.concat(parts, " ", 1, #parts - 1)
     local quantity, unit = parts[#parts]:match("([%d%.]+)(%a+)")

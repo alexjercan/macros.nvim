@@ -75,4 +75,63 @@ describe("Database", function()
             "apple 0.5pc"
         )
     end)
+
+    it("supports fractional grams", function()
+        local db = Database:new()
+        db:add(
+            FoodItem:new(
+                Food:new("olive oil", Unit:new(UnitType.gram), 10),
+                Macro:new(0, 0, 10)
+            )
+        )
+
+        local item = db:get("olive oil 2.5g")
+        assert(item.food.amount == 2.5)
+        assert(item.macro.fat == 2.5)
+    end)
+end)
+
+describe("Database:query", function()
+    it("returns matching prefixes", function()
+        local db = Database:new()
+        db:add(FoodItem.from("apple 1pc,1,2,3"))
+        db:add(FoodItem.from("apricot 1pc,1,2,3"))
+        db:add(FoodItem.from("banana 1pc,1,2,3"))
+
+        local results = db:query("ap")
+        table.sort(results)
+
+        assert.same({ "apple pc", "apricot pc" }, results)
+    end)
+
+    it("returns empty for no matches", function()
+        local db = Database:new()
+        local results = db:query("zzz")
+        assert.are.same({}, results)
+    end)
+end)
+
+describe("Database:load", function()
+    it("loads items from file", function()
+        local tmp = vim.fn.tempname()
+        vim.fn.writefile({
+            "apple 1pc,1,2,3",
+            "banana 100g,1,2,3",
+        }, tmp)
+
+        local db = Database:new()
+        db:load(tmp)
+
+        local results = db:query("")
+        assert(#results == 2)
+    end)
+end)
+
+describe("Database:get errors", function()
+    it("errors on unknown food", function()
+        local db = Database:new()
+        assert.has_error(function()
+            db:get("banana 1pc")
+        end)
+    end)
 end)

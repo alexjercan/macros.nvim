@@ -27,7 +27,8 @@ end
 ---
 ---@param item FoodItem
 function Database:add(item)
-    self.foods[item.food.name] = item
+    local key = string.lower(item.food.name .. " " .. tostring(item.food.unit))
+    self.foods[key] = item
 end
 
 --- A function that adds multiple food items to the database.
@@ -50,7 +51,15 @@ function Database:load(file)
     end
 
     for line in fd:lines() do
-        self:add(FoodItem.from(line))
+        local ok, item = pcall(FoodItem.from, line)
+        if ok then
+            self:add(item)
+        else
+            vim.notify(
+                "Skipping invalid line in macros.csv: " .. line,
+                vim.log.levels.WARN
+            )
+        end
     end
 end
 
@@ -63,7 +72,8 @@ end
 ---@return FoodItem
 function Database:get(input)
     local food = Food.from(input)
-    local item = self.foods[food.name]
+    local key = string.lower(food.name .. " " .. tostring(food.unit))
+    local item = self.foods[key]
 
     if item == nil then
         error("Unknown food: " .. food.name)
@@ -77,6 +87,24 @@ function Database:get(input)
     )
 
     return FoodItem:new(food, macro)
+end
+
+--- A function that queries the database for a list of food items that match a
+--- given prefix.
+---
+---@param prefix string
+---
+---@return table<string>
+function Database:query(prefix)
+    prefix = string.lower(prefix)
+    local results = {}
+    for key, _ in pairs(self.foods) do
+        if vim.startswith(key, prefix) then
+            table.insert(results, key)
+        end
+    end
+
+    return results
 end
 
 return Database
