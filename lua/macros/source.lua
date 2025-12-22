@@ -32,11 +32,8 @@ end
 --- @param callback function
 function Source:complete(params, callback)
     local prefix = params.context.cursor_before_line:sub(params.offset)
-    vim.print("Prefix: " .. prefix)
 
     local results = self.database:query(prefix)
-    vim.print("Results: ")
-    vim.print(results)
 
     local items = {}
     for _, food in ipairs(results) do

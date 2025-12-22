@@ -1,5 +1,6 @@
 vim.api.nvim_create_user_command("Macros", require("macros").macros, {})
 vim.api.nvim_create_user_command("MacrosInsert", require("macros").insert, {})
+vim.api.nvim_create_user_command("MacrosQuery", require("macros").query, {})
 vim.api.nvim_create_user_command("MacrosReload", function()
     require("macros").setup(require("macros").config)
 end, {})
