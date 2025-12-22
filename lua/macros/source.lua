@@ -23,7 +23,7 @@ end
 ---
 --- @return boolean
 function Source.is_available()
-    return vim.bo.filetype == "markdown"
+    return true
 end
 
 --- Complete the given parameters.
