@@ -132,6 +132,7 @@ M.query = function()
         choices[i] = item
     end
 
+    vim.cmd("redraw!")
     local choice = vim.fn.inputlist(choices)
     if choice < 1 or choice > #choices then
         return
