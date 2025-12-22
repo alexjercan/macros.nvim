@@ -65,15 +65,14 @@ end
 ---@param args Config?
 M.setup = function(args)
     args = args or {}
+    M.config = vim.tbl_deep_extend("force", M.config, args)
 
-    validate_config(args)
+    validate_config(M.config)
 
     -- create the file if it doesn't exist
     if vim.fn.filereadable(macros_path) == 0 then
         vim.fn.writefile({}, macros_path)
     end
-
-    M.config = vim.tbl_deep_extend("force", M.config, args)
 
     M.database = Database:new()
 
