@@ -1,11 +1,15 @@
-*macros.txt*           For Neovim >= 0.8.0          Last change: 2024 March 23
+*macros.txt*         For Neovim >= 0.8.0         Last change: 2025 December 22
 
 ==============================================================================
 Table of Contents                                   *macros-table-of-contents*
 
 1. Macros                                                      |macros-macros|
+  - Requirements                                  |macros-macros-requirements|
   - Quickstart                                      |macros-macros-quickstart|
   - Config                                              |macros-macros-config|
+  - Completion                                      |macros-macros-completion|
+  - Health                                              |macros-macros-health|
+2. Links                                                        |macros-links|
 
 ==============================================================================
 1. Macros                                                      *macros-macros*
@@ -13,6 +17,12 @@ Table of Contents                                   *macros-table-of-contents*
 
 
 A plugin to compute the macros for different types of food.
+
+
+REQUIREMENTS                                      *macros-macros-requirements*
+
+- Neovim >= 0.8
+- Optional: nvim-cmp for completion
 
 
 QUICKSTART                                          *macros-macros-quickstart*
@@ -73,6 +83,26 @@ and the csv file should be like
     chicken breast 100g,31,0,3.6
     apple 1p,0.3,25,0.2
 <
+
+
+COMPLETION                                          *macros-macros-completion*
+
+If you use `nvim-cmp`, macros.nvim provides completion for food items (based on
+name + unit).
+
+Completion is enabled automatically when `nvim-cmp` is installed.
+
+
+HEALTH                                                  *macros-macros-health*
+
+You can check the plugin status with:
+
+>
+    :checkhealth macros
+<
+
+This will verify: - Neovim compatibility - Database state - CSV file
+availability - Optional integrations
 
 ==============================================================================
 2. Links                                                        *macros-links*
