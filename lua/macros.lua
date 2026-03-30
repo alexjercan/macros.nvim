@@ -188,6 +188,20 @@ M.query2 = function()
     )
 end
 
+---Open Telescope picker for searching food items with real-time feedback
+M.telescope_query = function()
+    local ok, telescope = pcall(require, "macros.telescope")
+    if not ok then
+        vim.notify(
+            "Telescope is not installed. Please install telescope.nvim to use this feature.",
+            vim.log.levels.ERROR
+        )
+        return
+    end
+
+    telescope.food_picker(M.database)
+end
+
 ---Run health checks
 function M.health()
     require("macros.health").check()

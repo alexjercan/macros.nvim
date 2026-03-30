@@ -9,6 +9,7 @@ A plugin to compute the macros for different types of food.
 
 - Neovim >= 0.8
 - Optional: nvim-cmp for completion
+- Optional: telescope.nvim for fuzzy search picker
 
 ## Quickstart
 
@@ -37,6 +38,14 @@ chicken breast 100g,31,0,3.6
 :MacrosInsert
 -- now you will be able to use chicken breast in the future
 ```
+
+You can also search for food items using the `:MacrosQuery` command for prefix
+search or `:MacrosQuery2` for fuzzy search. Both will prompt you for input and
+show a list of matching items.
+
+For real-time fuzzy search with instant feedback, use `:MacrosTelescope` to
+open a Telescope picker (requires telescope.nvim). This allows you to search
+through your food database with live results as you type.
 
 ## Config
 
@@ -74,6 +83,16 @@ If you use `nvim-cmp`, macros.nvim provides completion for food items
 (based on name + unit).
 
 Completion is enabled automatically when `nvim-cmp` is installed.
+
+## Telescope Integration
+
+If you have [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) 
+installed, you can use the `:MacrosTelescope` command to open an interactive 
+picker with real-time fuzzy search. This provides instant feedback as you type 
+and allows you to preview all matching items.
+
+Simply run `:MacrosTelescope` and start typing to search through your food 
+database. Press Enter to insert the selected item at your cursor position.
 
 ## Health
 
