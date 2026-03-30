@@ -26,14 +26,15 @@ M.food_picker = function(database, opts)
                 results = items,
             }),
             sorter = conf.generic_sorter(opts),
-            attach_mappings = function(prompt_bufnr, map)
+            attach_mappings = function(prompt_bufnr, _)
                 actions.select_default:replace(function()
                     actions.close(prompt_bufnr)
                     local selection = action_state.get_selected_entry()
                     if selection then
                         -- Insert the selected food item at cursor position
                         local buffer = vim.api.nvim_get_current_buf()
-                        local lines = vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
+                        local lines =
+                            vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
                         local line = vim.api.nvim_win_get_cursor(0)[1]
                         local n = #lines[line]
 
