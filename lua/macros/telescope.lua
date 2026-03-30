@@ -1,9 +1,3 @@
-local pickers = require("telescope.pickers")
-local finders = require("telescope.finders")
-local conf = require("telescope.config").values
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-
 local M = {}
 
 --- Creates a Telescope picker for searching food items in the database
@@ -11,6 +5,28 @@ local M = {}
 ---@param database Database The database to search
 ---@param opts table? Optional Telescope configuration
 M.food_picker = function(database, opts)
+    -- Lazy load telescope dependencies only when the function is called
+    local ok_pickers, pickers = pcall(require, "telescope.pickers")
+    local ok_finders, finders = pcall(require, "telescope.finders")
+    local ok_conf, conf = pcall(require, "telescope.config")
+    local ok_actions, actions = pcall(require, "telescope.actions")
+    local ok_action_state, action_state =
+        pcall(require, "telescope.actions.state")
+
+    if
+        not (
+            ok_pickers
+            and ok_finders
+            and ok_conf
+            and ok_actions
+            and ok_action_state
+        )
+    then
+        error(
+            "Telescope is not installed. Please install telescope.nvim to use this feature."
+        )
+    end
+
     opts = opts or {}
 
     -- Get all food items from the database
@@ -25,7 +41,7 @@ M.food_picker = function(database, opts)
             finder = finders.new_table({
                 results = items,
             }),
-            sorter = conf.generic_sorter(opts),
+            sorter = conf.values.generic_sorter(opts),
             attach_mappings = function(prompt_bufnr, _)
                 actions.select_default:replace(function()
                     actions.close(prompt_bufnr)
