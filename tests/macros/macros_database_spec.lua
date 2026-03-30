@@ -111,6 +111,76 @@ describe("Database:query", function()
     end)
 end)
 
+describe("Database:fuzzy_query", function()
+    it("matches characters in order", function()
+        local db = Database:new()
+        db:add(FoodItem.from("apple 1pc,1,2,3"))
+        db:add(FoodItem.from("apricot 1pc,1,2,3"))
+        db:add(FoodItem.from("banana 1pc,1,2,3"))
+        db:add(FoodItem.from("chicken breast 100g,31,0,3.6"))
+
+        local results = db:fuzzy_query("apl")
+        table.sort(results)
+
+        assert.same({ "apple pc" }, results)
+    end)
+
+    it("matches non-consecutive characters", function()
+        local db = Database:new()
+        db:add(FoodItem.from("chicken breast 100g,31,0,3.6"))
+        db:add(FoodItem.from("chicken thigh 100g,25,0,5"))
+        db:add(FoodItem.from("chocolate 100g,5,50,30"))
+
+        local results = db:fuzzy_query("chbr")
+        table.sort(results)
+
+        assert.same({ "chicken breast g" }, results)
+    end)
+
+    it("is case insensitive", function()
+        local db = Database:new()
+        db:add(FoodItem.from("Apple 1pc,1,2,3"))
+        db:add(FoodItem.from("BANANA 1pc,1,2,3"))
+
+        local results = db:fuzzy_query("BAN")
+        assert.same({ "BANANA pc" }, results)
+
+        local results2 = db:fuzzy_query("app")
+        assert.same({ "Apple pc" }, results2)
+    end)
+
+    it("returns empty for no matches", function()
+        local db = Database:new()
+        db:add(FoodItem.from("apple 1pc,1,2,3"))
+
+        local results = db:fuzzy_query("zyx")
+        assert.are.same({}, results)
+    end)
+
+    it("matches across spaces", function()
+        local db = Database:new()
+        db:add(FoodItem.from("chicken breast 100g,31,0,3.6"))
+        db:add(FoodItem.from("white bread 100g,9,49,3.2"))
+
+        local results = db:fuzzy_query("wbr")
+        table.sort(results)
+
+        assert.same({ "white bread g" }, results)
+    end)
+
+    it("returns multiple matches when multiple items match", function()
+        local db = Database:new()
+        db:add(FoodItem.from("apple 1pc,1,2,3"))
+        db:add(FoodItem.from("apricot 1pc,1,2,3"))
+        db:add(FoodItem.from("avocado 1pc,2,8,15"))
+
+        local results = db:fuzzy_query("ap")
+        table.sort(results)
+
+        assert.are.equal(3, #results)
+    end)
+end)
+
 describe("Database:load", function()
     it("loads items from file", function()
         local tmp = vim.fn.tempname()

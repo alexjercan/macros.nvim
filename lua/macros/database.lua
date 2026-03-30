@@ -110,4 +110,40 @@ function Database:query(prefix)
     return results
 end
 
+--- A function that performs fuzzy matching on the database. Returns items where
+--- all characters from the query appear in order in the key (case insensitive).
+---
+---@param query string
+---
+---@return table<string>
+function Database:fuzzy_query(query)
+    query = string.lower(query)
+    local results = {}
+
+    for key, item in pairs(self.foods) do
+        local pos = 1
+        local match = true
+
+        for i = 1, #query do
+            local char = query:sub(i, i)
+            local found = key:find(char, pos, true)
+            if found then
+                pos = found + 1
+            else
+                match = false
+                break
+            end
+        end
+
+        if match then
+            table.insert(
+                results,
+                item.food.name .. " " .. tostring(item.food.unit)
+            )
+        end
+    end
+
+    return results
+end
+
 return Database

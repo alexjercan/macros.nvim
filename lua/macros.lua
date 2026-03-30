@@ -153,6 +153,41 @@ M.query = function()
     )
 end
 
+---Find the best matching items for a query using fuzzy matching
+M.query2 = function()
+    local query = vim.fn.input("Fuzzy query: ")
+    local results = M.database:fuzzy_query(query)
+    if #results == 0 then
+        vim.print("No matching items found.")
+        return
+    end
+
+    local choices = {}
+    for i, item in ipairs(results) do
+        choices[i] = i .. ". " .. item
+    end
+
+    vim.cmd("redraw!")
+    local choice = vim.fn.inputlist(choices)
+    if choice < 1 or choice > #choices then
+        return
+    end
+
+    local buffer = vim.api.nvim_get_current_buf()
+    local lines = vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    local n = #lines[line]
+
+    vim.api.nvim_buf_set_text(
+        buffer,
+        line - 1,
+        n,
+        line - 1,
+        n,
+        { results[choice] }
+    )
+end
+
 ---Run health checks
 function M.health()
     require("macros.health").check()
