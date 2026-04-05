@@ -1,6 +1,6 @@
 # When inserting a food item query for qty and insert macros too
 
-- STATUS: IN_PROGRESS
+- STATUS: CLOSED
 - PRIORITY: 100
 - TAGS: feature
 
