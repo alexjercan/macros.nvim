@@ -47,21 +47,62 @@ M.food_picker = function(database, opts)
                     actions.close(prompt_bufnr)
                     local selection = action_state.get_selected_entry()
                     if selection then
-                        -- Insert the selected food item at cursor position
-                        local buffer = vim.api.nvim_get_current_buf()
-                        local lines =
-                            vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
-                        local line = vim.api.nvim_win_get_cursor(0)[1]
-                        local n = #lines[line]
+                        -- Prompt for quantity after food selection
+                        vim.schedule(function()
+                            local quantity = vim.fn.input("Quantity: ")
+                            if quantity == "" then
+                                return
+                            end
 
-                        vim.api.nvim_buf_set_text(
-                            buffer,
-                            line - 1,
-                            n,
-                            line - 1,
-                            n,
-                            { selection[1] }
-                        )
+                            -- Parse quantity as a number
+                            local qty = tonumber(quantity)
+                            if not qty then
+                                vim.notify(
+                                    "Invalid quantity: " .. quantity,
+                                    vim.log.levels.ERROR
+                                )
+                                return
+                            end
+
+                            -- Build the food string with quantity
+                            -- selection[1] is "food name unit", we need "food name qty unit"
+                            local selected_text = selection[1]
+                            local parts = {}
+                            for word in selected_text:gmatch("%S+") do
+                                table.insert(parts, word)
+                            end
+
+                            -- Last part is the unit, everything else is the food name
+                            local unit = parts[#parts]
+                            table.remove(parts, #parts)
+                            local food_name = table.concat(parts, " ")
+
+                            local food_string = food_name .. " " .. qty .. unit
+
+                            -- Get the macros for this food item
+                            local result = database:get(food_string)
+
+                            -- Format the output nicely with macros
+                            local output = food_string
+                                .. ","
+                                .. tostring(result.macro)
+
+                            -- Insert at cursor position
+                            local buffer = vim.api.nvim_get_current_buf()
+                            local lines =
+                                vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
+                            local line = vim.api.nvim_win_get_cursor(0)[1]
+                            local n = #lines[line]
+
+                            vim.api.nvim_buf_set_text(
+                                buffer,
+                                line - 1,
+                                n,
+                                line - 1,
+                                n,
+                                { output }
+                            )
+                        end)
                     end
                 end)
                 return true
