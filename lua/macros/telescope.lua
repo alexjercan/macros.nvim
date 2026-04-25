@@ -29,6 +29,12 @@ M.food_picker = function(database, opts)
 
     opts = opts or {}
 
+    -- Capture the buffer and cursor position BEFORE telescope opens,
+    -- so we know exactly where to insert the new line later.
+    local target_buffer = vim.api.nvim_get_current_buf()
+    local target_win = vim.api.nvim_get_current_win()
+    local target_line = vim.api.nvim_win_get_cursor(target_win)[1]
+
     -- Get all food items from the database
     local items = {}
     for _, item in pairs(database.foods) do
@@ -88,20 +94,23 @@ M.food_picker = function(database, opts)
                                 .. tostring(result.macro)
 
                             -- Insert on next line (like 'o' in vim)
-                            local buffer = vim.api.nvim_get_current_buf()
-                            local line = vim.api.nvim_win_get_cursor(0)[1]
-
-                            -- Insert a new line after the current line
+                            -- Use the buffer/line we captured BEFORE telescope opened.
                             vim.api.nvim_buf_set_lines(
-                                buffer,
-                                line,
-                                line,
+                                target_buffer,
+                                target_line,
+                                target_line,
                                 false,
                                 { output }
                             )
 
-                            -- Move cursor to the new line
-                            vim.api.nvim_win_set_cursor(0, { line + 1, 0 })
+                            -- Move cursor to the new line at the beginning
+                            if vim.api.nvim_win_is_valid(target_win) then
+                                vim.api.nvim_set_current_win(target_win)
+                                vim.api.nvim_win_set_cursor(
+                                    target_win,
+                                    { target_line + 1, 0 }
+                                )
+                            end
                         end)
                     end
                 end)
