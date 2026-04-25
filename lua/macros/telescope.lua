@@ -87,21 +87,21 @@ M.food_picker = function(database, opts)
                                 .. ","
                                 .. tostring(result.macro)
 
-                            -- Insert at cursor position
+                            -- Insert on next line (like 'o' in vim)
                             local buffer = vim.api.nvim_get_current_buf()
-                            local lines =
-                                vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
                             local line = vim.api.nvim_win_get_cursor(0)[1]
-                            local n = #lines[line]
 
-                            vim.api.nvim_buf_set_text(
+                            -- Insert a new line after the current line
+                            vim.api.nvim_buf_set_lines(
                                 buffer,
-                                line - 1,
-                                n,
-                                line - 1,
-                                n,
+                                line,
+                                line,
+                                false,
                                 { output }
                             )
+
+                            -- Move cursor to the new line
+                            vim.api.nvim_win_set_cursor(0, { line + 1, 0 })
                         end)
                     end
                 end)
