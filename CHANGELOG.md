@@ -9,8 +9,10 @@ one line each. Breaking changes are tagged **(breaking)**.
 
 ## [Unreleased]
 
-Everything below shipped before the project started tagging releases; it is
-grouped here as the first release's content.
+## [0.1.0] - 2026-07-31
+
+The first tagged release. Everything below shipped before the project started
+tagging.
 
 ### Added
 
@@ -37,4 +39,5 @@ grouped here as the first release's content.
 - `setup()` validates the config object rather than its own arguments.
 - Query results are numbered.
 
-[unreleased]: https://github.com/alexjercan/macros.nvim/commits/main
+[unreleased]: https://github.com/alexjercan/macros.nvim/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/alexjercan/macros.nvim/releases/tag/v0.1.0
