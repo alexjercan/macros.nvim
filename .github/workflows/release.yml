@@ -1,18 +1,43 @@
-name: "release"
+name: release
 on:
   push:
     tags:
-      - 'v*'
+      # Exactly semver, no prerelease suffix: the version guard below compares
+      # the whole tag against the declared version, so a suffix could only
+      # ever fail there.
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
 jobs:
   test:
     uses: ./.github/workflows/lint-test.yml
 
-  luarocks-upload:
+  release:
     needs: test
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - name: LuaRocks Upload
-        uses: nvim-neorocks/luarocks-tag-release@v4
+      - uses: actions/checkout@v4
+
+      # The version lives in two places (the CLI's --version and the flake
+      # package). A tag that disagrees with them would publish a release whose
+      # build reports another version, so stop before creating it.
+      - name: Tag matches the declared version
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          version="${tag#v}"
+          grep -q "^local VERSION = \"${version}\"$" macros.lua || {
+            echo "macros.lua does not declare version ${version} (tag ${tag})" >&2
+            exit 1
+          }
+          grep -q "version = \"${version}\";" flake.nix || {
+            echo "flake.nix does not declare version ${version} (tag ${tag})" >&2
+            exit 1
+          }
+
+      - name: Create release
         env:
-          LUAROCKS_API_KEY: ${{ secrets.LUAROCKS_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          gh release create "$tag" --title "$tag" --generate-notes

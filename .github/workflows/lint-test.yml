@@ -1,5 +1,13 @@
 ---
-on: [push, pull_request]
+on:
+  # Branch-filtered so a release tag does not run this suite twice: once here
+  # and once through release.yml's test job.
+  push:
+    branches:
+      - main
+  pull_request:
+  # Called by release.yml so a tag cannot publish without lint and tests.
+  workflow_call:
 name: lint-test
 
 jobs:
@@ -7,7 +15,7 @@ jobs:
     name: stylua
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: JohnnyMorganz/stylua-action@v3
         with:
           version: latest
@@ -18,7 +26,7 @@ jobs:
     name: luacheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: nebularg/actions-luacheck@v1
         with:
           files: lua/
@@ -30,13 +38,13 @@ jobs:
         nvim-versions: ['stable', 'nightly']
     name: test
     steps:
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.local/share/nvim
           key: nvim-${{ matrix.nvim-versions }}
 
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: rhysd/action-setup-vim@v1
         with:
