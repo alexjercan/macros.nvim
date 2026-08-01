@@ -57,5 +57,6 @@ On `main`, for version `X.Y.Z`:
   `macros.lua` is the runnable example.
 - Domain docs: `README.md` is the source of truth; `doc/` is generated from it.
 - Research and network: none required; the food database is local CSV.
-- Checks and records: `make test` before every commit; durable lessons go to
-  `LESSONS.md` at the repo root.
+- Checks and records: `make test` before every commit; durable task evidence
+  stays in task records.
+- Knowledge: central repo `/home/alex/personal/agent-knowledge`; project=macros.nvim; tags=neovim,lua,macros. Advisory only; failed writes stay in RETRO.
