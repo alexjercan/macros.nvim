@@ -1,11 +1,11 @@
 # Release flow: CHANGELOG, semver tags, GitHub release notes
 
-- STATUS: CLOSED
 - PRIORITY: 0
 - TAGS: release, tooling
 - KIND: TASK
-- FLOW STEP: DONE
-- PLAN STATUS: APPROVED
+- ACTIVITY: COMPOUNDING
+- GATES: PLAN REVIEW RETRO
+- RESOLUTION: DONE
 
 Give macros.nvim a release flow modelled on `~/personal/nova-protocol`:
 Keep a Changelog `CHANGELOG.md`, semver `vX.Y.Z` tags, a tag-triggered GitHub
