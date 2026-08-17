@@ -1,5 +1,5 @@
 *macros.txt*
-                            For Neovim >= 0.8.0    Last change: 2026 August 09
+                            For Neovim >= 0.8.0    Last change: 2026 August 17
 
 ==============================================================================
 Table of Contents                                   *macros-table-of-contents*
@@ -8,6 +8,7 @@ Table of Contents                                   *macros-table-of-contents*
   - Requirements                                  |macros-macros-requirements|
   - Quickstart                                      |macros-macros-quickstart|
   - Config                                              |macros-macros-config|
+  - Standalone CLI                              |macros-macros-standalone-cli|
   - Completion                                      |macros-macros-completion|
   - Telescope Integration                |macros-macros-telescope-integration|
   - Health                                              |macros-macros-health|
@@ -94,6 +95,29 @@ and the csv file should be like
     chicken breast 100g,31,0,3.6
     apple 1p,0.3,25,0.2
 <
+
+
+STANDALONE CLI                                  *macros-macros-standalone-cli*
+
+The flake packages a `macros` command with explicit search and calculation
+operations:
+
+>sh
+    macros search chick
+    macros calculate --food "chicken breast:g" --amount 150
+<
+
+Use `--json` for integrations. Search returns stable food IDs, display names,
+and canonical units. Calculation accepts one selected ID and a positive
+quantity:
+
+>sh
+    macros search chick --json
+    macros calculate --food "chicken breast:g" --amount 150 --json
+<
+
+The database defaults to `~/.local/share/nvim/macros.csv`. Set
+`MACROS_DATABASE` or pass `--database PATH` to use another file.
 
 
 COMPLETION                                          *macros-macros-completion*
