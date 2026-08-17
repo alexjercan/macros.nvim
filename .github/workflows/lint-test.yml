@@ -51,5 +51,8 @@ jobs:
           neovim: true
           version: ${{ matrix.nvim-versions }}
 
+      - name: Install Lua CLI runtime
+        run: sudo apt-get update && sudo apt-get install --yes lua5.2
+
       - name: run tests
         run: make test
