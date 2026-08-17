@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-local VERSION = "0.1.0"
+local VERSION = "0.2.0"
 
 local script_path = arg[0]:match("(.*/)")
 if script_path then

@@ -9,6 +9,8 @@ one line each. Breaking changes are tagged **(breaking)**.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-17
+
 ### Changed
 
 - **(breaking)** The standalone CLI now uses explicit `search`, `calculate`, and `insert` commands with JSON output and configurable database paths.
@@ -43,5 +45,6 @@ tagging.
 - `setup()` validates the config object rather than its own arguments.
 - Query results are numbered.
 
-[unreleased]: https://github.com/alexjercan/macros.nvim/compare/v0.1.0...HEAD
+[unreleased]: https://github.com/alexjercan/macros.nvim/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/alexjercan/macros.nvim/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/alexjercan/macros.nvim/releases/tag/v0.1.0
