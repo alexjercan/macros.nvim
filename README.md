@@ -77,6 +77,28 @@ chicken breast 100g,31,0,3.6
 apple 1p,0.3,25,0.2
 ```
 
+## Standalone CLI
+
+The flake packages a `macros` command with explicit search and calculation
+operations:
+
+```sh
+macros search chick
+macros calculate --food "chicken breast:g" --amount 150
+```
+
+Use `--json` for integrations. Search returns stable food IDs, display names,
+and canonical units. Calculation accepts one selected ID and a positive
+quantity:
+
+```sh
+macros search chick --json
+macros calculate --food "chicken breast:g" --amount 150 --json
+```
+
+The database defaults to `~/.local/share/nvim/macros.csv`. Set
+`MACROS_DATABASE` or pass `--database PATH` to use another file.
+
 ## Completion
 
 If you use `nvim-cmp`, macros.nvim provides completion for food items

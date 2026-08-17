@@ -9,6 +9,10 @@ one line each. Breaking changes are tagged **(breaking)**.
 
 ## [Unreleased]
 
+### Changed
+
+- **(breaking)** The standalone CLI now uses explicit `search`, `calculate`, and `insert` commands with JSON output and configurable database paths.
+
 ## [0.1.0] - 2026-07-31
 
 The first tagged release. Everything below shipped before the project started

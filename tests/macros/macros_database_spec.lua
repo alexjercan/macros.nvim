@@ -181,6 +181,60 @@ describe("Database:fuzzy_query", function()
     end)
 end)
 
+describe("Database:search and calculate", function()
+    it("returns deterministic candidates with stable IDs", function()
+        local db = Database:new()
+        db:add(FoodItem.from("chicken thigh 100g,25,0,5"))
+        db:add(FoodItem.from("chicken breast 100g,31,0,3.6"))
+
+        assert.same({
+            {
+                id = "chicken breast:g",
+                name = "chicken breast",
+                unit = "g",
+            },
+            {
+                id = "chicken thigh:g",
+                name = "chicken thigh",
+                unit = "g",
+            },
+        }, db:search("ch"))
+    end)
+
+    it("ranks prefix matches before other fuzzy matches", function()
+        local db = Database:new()
+        db:add(FoodItem.from("chicken breast 100g,31,0,3.6"))
+        db:add(FoodItem.from("egg 1pc,6,0,5"))
+
+        local results = db:search("eg")
+        assert.are.equal("egg:pc", results[1].id)
+        assert.are.equal("chicken breast:g", results[2].id)
+    end)
+
+    it("calculates by selected ID", function()
+        local db = Database:new()
+        db:add(FoodItem.from("egg 1pc,6,0,5"))
+
+        local item = db:calculate("egg:pc", 2)
+        assert.are.equal("egg", item.food.name)
+        assert.are.equal(2, item.food.amount)
+        assert.are.equal(12, item.macro.protein)
+        assert.are.equal(10, item.macro.fat)
+    end)
+
+    it("rejects unknown IDs and invalid amounts", function()
+        local db = Database:new()
+        db:add(FoodItem.from("egg 1pc,6,0,5"))
+
+        assert.has_error(function()
+            db:calculate("missing:pc", 1)
+        end)
+        assert.has_error(function()
+            db:calculate("egg:pc", 0)
+        end)
+    end)
+end)
+
 describe("Database:load", function()
     it("loads items from file", function()
         local tmp = vim.fn.tempname()
