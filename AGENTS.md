@@ -1,30 +1,46 @@
 # AGENTS.md
 
-Repository guidance. Global `~/AGENTS.md` applies.
+Global `~/AGENTS.md` applies.
 
 ## Project
 
 - Neovim plugin and standalone Lua CLI for food macro calculations.
-- Plugin code: `lua/macros/`. Commands: `plugin/macros.lua`.
-- `macros.lua` is the CLI over the same modules through a `vim` shim.
+- Plugin modules live in `lua/macros/`. Commands live in `plugin/macros.lua`.
+- `macros.lua` provides the CLI over the same modules through a `vim` shim.
 
 ## Agent workflow
 
-- Tracker/epics: tatr records under `tasks/<id>/`; one requested change per
+- Work directly on `main` unless the user requests an isolated worktree.
+- Use tatr for tracked work. Create a task only when the user requests one.
+- Use one task for one user request and its follow-up work. Create dependent
+  tasks only when the user requests decomposition.
+- Store task records under `tasks/<id>/` and keep durable evidence with the
   task.
-- Examples/retention: `macros.lua` is the runnable example; no separate example
-  or script directory.
-- Domain docs: `README.md` is authoritative; `doc/` is generated from it.
-- Research/network: use the local CSV and source; no network is required.
-- Checks/records: run `make test`; keep durable evidence in the task directory.
+- Treat `README.md` as authoritative. `doc/` is generated from it.
+- Use the local CSV and source before network research.
 
-## Rules
+## Conventions
 
-- Never hand-edit `doc/`.
-- CI also runs `stylua --check lua` and `luacheck lua`.
-- User-visible changes need one short `CHANGELOG.md` line under Unreleased.
+- Keep plugin and standalone CLI behavior in shared `lua/macros/` modules.
+- Match neighboring Lua style and format Lua with StyLua.
+- Lint Lua with Luacheck.
+- Never hand-edit generated files under `doc/`.
+- Use `macros.lua` as the runnable CLI example. Do not add a separate examples
+  or scripts directory without a concrete need.
+- Add one short `CHANGELOG.md` line under Unreleased for user-visible changes.
   Skip internal refactors, tests, and task records.
-- Put rationale and worked examples in README or the task record.
+- Put durable rationale and worked examples in `README.md`. Keep transient
+  evidence with the task.
+
+## Verification
+
+Run the relevant checks:
+
+```bash
+make test
+stylua --check lua
+luacheck lua
+```
 
 ## Release
 
